@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Management System — Capstone Project Report</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px 40px;
+            color: #222;
+            line-height: 1.7;
+            background: #fff;
+        }
+        h1 { text-align: center; font-size: 28px; margin-bottom: 5px; color: #1a1a2e; }
+        h3.subtitle { text-align: center; font-weight: normal; color: #555; margin-top: 0; }
+        h2 { color: #16213e; border-bottom: 2px solid #0f3460; padding-bottom: 6px; margin-top: 40px; }
+        h3 { color: #1a1a2e; margin-top: 30px; }
+        h4 { color: #333; margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 14px; }
+        th, td { border: 1px solid #ccc; padding: 10px 12px; text-align: left; }
+        th { background-color: #0f3460; color: white; }
+        tr:nth-child(even) { background-color: #f8f9fa; }
+        img.screenshot {
+            max-width: 100%;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .img-caption {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            font-size: 13px;
+            margin-top: -10px;
+            margin-bottom: 20px;
+        }
+        blockquote {
+            border-left: 4px solid #0f3460;
+            margin: 15px 0;
+            padding: 10px 20px;
+            background: #f0f4ff;
+            color: #333;
+        }
+        ul, ol { padding-left: 25px; }
+        li { margin-bottom: 6px; }
+        strong { color: #1a1a2e; }
+        code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 13px; }
+        hr { border: none; border-top: 2px solid #eee; margin: 30px 0; }
+        .thank-you { text-align: center; font-size: 20px; font-style: italic; margin-top: 50px; color: #555; }
+        @media print {
+            body { margin: 0; padding: 15px; }
+            img.screenshot { max-width: 95%; page-break-inside: avoid; }
+            h2 { page-break-before: always; }
+            h2:first-of-type { page-break-before: avoid; }
+        }
+    </style>
+</head>
+<body>
+
+<h1>FARM MANAGEMENT SYSTEM</h1>
+<h3 class="subtitle">Salesforce Capstone Project — Final Report</h3>
+<hr>
+
+<h2>User Story</h2>
+<p>As a farmer, farm manager, or system administrator, I need a single, centralized platform built on Salesforce where I can record and keep track of everything related to my farms — the land details, the crops being grown, the farmers working on those farms, and the buyers purchasing the produce. Right now, most of this information lives in scattered notebooks, Excel files, or just in people's heads, and that leads to mistakes, lost records, and slow decision-making.</p>
+<p>What I want is a system that makes it easy to enter and update farm details, log crop production data, and keep buyer transaction records — all through a clean, user-friendly interface that also catches errors before they get saved. On top of that, I want to be able to pull up reports and dashboards in real time so I can actually see how productive each farm is, which crops are performing well, and where improvements are needed. The system should also have proper role-based access so that not everyone can see or edit everything — sensitive data should stay protected, while still allowing everyone on the team to collaborate smoothly.</p>
+<p>In short, this system should cut down on paperwork, reduce human errors, speed things up, and ultimately help us make smarter, data-driven decisions about how we manage our agricultural operations.</p>
+
+<h2>1. Introduction</h2>
+<h3>1.1 Project Overview</h3>
+<p>The Farm Management System (FMS) is a Salesforce-based application that I built as part of my capstone project. The core idea is pretty straightforward — take the messy, manual process of managing agricultural data and turn it into something digital, organized, and actually useful. The application handles data related to farms, crops, farmers, and buyers, and ties everything together with reports and dashboards that provide real-time insights. Instead of flipping through paper registers or juggling multiple spreadsheets, a farmer or manager can just log in, enter or look up information, and get a clear picture of what is happening across their operations.</p>
+
+<h3>1.2 Purpose</h3>
+<p>The main goals behind building this project were to:</p>
+<ul>
+    <li><strong>Digitize agricultural data management</strong> — moving away from paper-based and Excel-based record keeping to a proper cloud system.</li>
+    <li><strong>Improve data accuracy and accessibility</strong> — making sure the right information is always up to date and available to the people who need it.</li>
+    <li><strong>Automate record handling</strong> — using validation rules and relationships to reduce manual effort and prevent bad data from getting in.</li>
+    <li><strong>Enable real-time monitoring</strong> — through reports and dashboards that refresh with live data.</li>
+    <li><strong>Support data-driven farming decisions</strong> — giving managers and farmers actual numbers and trends to base their choices on, instead of guesswork.</li>
+    <li><strong>Enhance productivity and transparency</strong> — by keeping everything in one place where it can be tracked and audited.</li>
+</ul>
+
+<h2>2. Ideation Phase</h2>
+<h3>2.1 Problem Statement</h3>
+<p>Before building anything, I spent time understanding the real problems that different users face when it comes to managing farm-related data. I used a Customer Problem Statement approach to break this down by user type:</p>
+<table>
+    <tr><th>#</th><th>Customer</th><th>Trying To</th><th>But</th><th>Because</th><th>Feeling</th></tr>
+    <tr><td>PS-1</td><td>Farmer</td><td>Maintain farm and crop records</td><td>Data is often incomplete or incorrect</td><td>Records are kept manually in registers</td><td>Frustrated and confused</td></tr>
+    <tr><td>PS-2</td><td>Farm Manager</td><td>Monitor farm productivity and sales</td><td>Reports are delayed and inaccurate</td><td>Data is scattered across files and sheets</td><td>Stressed and inefficient</td></tr>
+    <tr><td>PS-3</td><td>Buyer</td><td>Access crop availability and pricing</td><td>Information is not updated regularly</td><td>There is no centralized digital system</td><td>Uncertain and dissatisfied</td></tr>
+    <tr><td>PS-4</td><td>System Admin</td><td>Manage user access and system security</td><td>Unauthorized access may occur</td><td>Access control is handled manually</td><td>Concerned and insecure</td></tr>
+</table>
+<p>The pattern across all four user types was clear: everyone was dealing with fragmented, unreliable data, and none of them had access to a single source of truth.</p>
+
+<h3>2.2 Empathy Map</h3>
+<p>To get a deeper understanding of what our target users go through on a daily basis, I put together an empathy map covering farmers, farm managers, buyers, and system administrators.</p>
+<p><strong>What they Think &amp; Feel:</strong> These users are constantly worried about whether their data is accurate and up to date. Farmers think about whether they have recorded everything properly. Managers feel the pressure of needing timely information to make decisions.</p>
+<p><strong>What they Hear:</strong> They hear feedback from agricultural officers about the importance of maintaining proper records. Managers hear complaints from higher-ups about delays in reporting.</p>
+<p><strong>What they See:</strong> Their current reality involves paper registers, cluttered spreadsheets, and hand-written logs. There is no unified system.</p>
+<p><strong>What they Say &amp; Do:</strong> They manually enter records into registers or Excel. They call each other on the phone to share information. They spend hours compiling reports by hand.</p>
+<p><strong>Pain Points:</strong> Data loss when registers get damaged, duplicate entries, calculation errors, time wasted on manual compilation, delayed reports, and unauthorized access.</p>
+<p><strong>What they Gain from a Solution:</strong> Automation of repetitive tasks, faster and more accurate reporting, a single platform for all data, proper access controls, and confidence in data reliability.</p>
+
+<h3>2.3 Brainstorming</h3>
+<p>During the ideation phase, I considered several possible approaches: manual farm records, Excel-based management, a custom web-based system, a mobile farm app, and a Salesforce-based FMS.</p>
+<p><strong>Selected Idea:</strong> I went with the Salesforce-based approach. It gave me the most functionality out of the box — custom objects for data modeling, Lightning UI for a clean interface, built-in reports and dashboards, and enterprise-grade security with profiles, roles, and sharing rules.</p>
+
+<h2>3. Requirement Analysis Phase</h2>
+<h3>3.1 Customer Journey Map</h3>
+<ol>
+    <li><strong>Login</strong> — User authenticates into the Salesforce org.</li>
+    <li><strong>Access Farm Management App</strong> — User opens the FMS Lightning App from the App Launcher.</li>
+    <li><strong>Enter Farm and Crop Data</strong> — User navigates to the relevant tabs and creates or updates records.</li>
+    <li><strong>Register Farmers and Buyers</strong> — User adds farmer and buyer information.</li>
+    <li><strong>Generate Reports</strong> — User runs reports to see aggregated data.</li>
+    <li><strong>Analyze Results</strong> — User views dashboards for visual insights.</li>
+    <li><strong>Decision Making</strong> — User makes informed decisions based on the data.</li>
+</ol>
+
+<h3>3.2 Solution Requirements</h3>
+<h4>Functional Requirements</h4>
+<table>
+    <tr><th>FR No.</th><th>Requirement</th></tr>
+    <tr><td>FR-1</td><td>User Authentication</td></tr>
+    <tr><td>FR-2</td><td>Farm, Crop, Farmer, and Buyer Management</td></tr>
+    <tr><td>FR-3</td><td>Data Entry and Validation</td></tr>
+    <tr><td>FR-4</td><td>Relationship Mapping between Objects</td></tr>
+    <tr><td>FR-5</td><td>Report Generation</td></tr>
+    <tr><td>FR-6</td><td>Dashboard Visualization</td></tr>
+    <tr><td>FR-7</td><td>User Role Management</td></tr>
+</table>
+
+<h4>Non-Functional Requirements</h4>
+<table>
+    <tr><th>NFR</th><th>Description</th><th>Example</th></tr>
+    <tr><td>Usability</td><td>Easy-to-use interface</td><td>Simple Lightning UI navigation</td></tr>
+    <tr><td>Security</td><td>Data protection mechanisms</td><td>Profiles, Roles, and Sharing Rules</td></tr>
+    <tr><td>Reliability</td><td>No data loss</td><td>Cloud-based backup and storage</td></tr>
+    <tr><td>Performance</td><td>Fast data access</td><td>Reports generated in under 3 seconds</td></tr>
+    <tr><td>Availability</td><td>24/7 system access</td><td>Cloud hosting on Salesforce platform</td></tr>
+    <tr><td>Scalability</td><td>Handles growth</td><td>Supports additional farms, users, and regions</td></tr>
+</table>
+
+<h3>3.3 Data Flow</h3>
+<p><strong>User → Salesforce Lightning UI → Custom Objects (Farm, Crop, Farmer, Buyer) → Validation Rules → Relationships → Reports → Dashboards</strong></p>
+
+<h3>3.4 Technology Stack</h3>
+<table>
+    <tr><th>Layer</th><th>Technology</th></tr>
+    <tr><td>Frontend</td><td>Salesforce Lightning UI</td></tr>
+    <tr><td>Backend</td><td>Salesforce Platform</td></tr>
+    <tr><td>Database</td><td>Salesforce Cloud (Custom Objects)</td></tr>
+    <tr><td>Automation</td><td>Validation Rules, Field Dependencies</td></tr>
+    <tr><td>Analytics</td><td>Reports &amp; Dashboards</td></tr>
+</table>
+
+<h2>4. Project Design Phase</h2>
+<h3>4.1 Problem–Solution Fit</h3>
+<p>The FMS directly addresses the problems identified in the ideation phase. Manual record-keeping is replaced with structured digital data entry in Salesforce. Cloud storage eliminates the risk of data loss. Interactive dashboards replace hand-compiled spreadsheets. Real-time reports remove delays. Role-based access with sharing rules solves the security concerns.</p>
+
+<h3>4.2 Proposed Solution</h3>
+<table>
+    <tr><th>Parameter</th><th>Description</th></tr>
+    <tr><td>Problem</td><td>Manual maintenance of farm, crop, farmer, and buyer records leading to errors, data loss, and reporting delays.</td></tr>
+    <tr><td>Solution</td><td>A Salesforce-based Farm Management System with centralized data storage, structured relationships, and automation.</td></tr>
+    <tr><td>Innovation</td><td>Automated data entry validation, cloud storage, formula fields for yield calculations, and real-time reporting dashboards.</td></tr>
+    <tr><td>Impact</td><td>Improved data accuracy, faster reporting, and better decision-making for farmers and managers.</td></tr>
+    <tr><td>Business Model</td><td>Digital farm management and agricultural data services platform.</td></tr>
+    <tr><td>Scalability</td><td>Supports multiple farms, users, and regions through Salesforce's cloud-based infrastructure.</td></tr>
+</table>
+
+<h3>4.3 Solution Architecture</h3>
+<ol>
+    <li><strong>Presentation Layer</strong> — Salesforce Lightning UI with custom tabs and the Farm Management System Lightning App.</li>
+    <li><strong>Application Layer</strong> — Validation rules, field dependencies (State → District → Village), and object relationships.</li>
+    <li><strong>Data Layer</strong> — Four custom objects (Farm__c, Crop__c, Farmer__c, Buyer__c) with custom fields.</li>
+    <li><strong>Analytics Layer</strong> — Reports and Dashboards with charts and gauges.</li>
+</ol>
+
+<h2>5. Project Planning &amp; Scheduling</h2>
+<h3>5.1 Product Backlog &amp; Sprint Schedule</h3>
+<table>
+    <tr><th>Sprint</th><th>Epic</th><th>User Story #</th><th>User Story / Task</th><th>Story Points</th><th>Priority</th></tr>
+    <tr><td>Sprint-1</td><td>Developer Setup</td><td>USN-1</td><td>Create and configure a Salesforce developer account</td><td>3</td><td>High</td></tr>
+    <tr><td>Sprint-2a</td><td>Data Modeling</td><td>USN-2</td><td>Create Farm, Crop, Farmer, and Buyer objects with relationships</td><td>5</td><td>High</td></tr>
+    <tr><td>Sprint-2b</td><td>Data Modeling</td><td>USN-3</td><td>Create tabs and a Lightning App for all farm modules</td><td>5</td><td>High</td></tr>
+    <tr><td>Sprint-3a</td><td>Automation</td><td>USN-4</td><td>Validate farm and crop details (dates, quantities, mandatory fields)</td><td>3</td><td>High</td></tr>
+    <tr><td>Sprint-3b</td><td>Automation</td><td>USN-5</td><td>Automated flows for crop updates and buyer notifications</td><td>3</td><td>High</td></tr>
+    <tr><td>Sprint-4</td><td>Security</td><td>USN-6</td><td>Role-based access control for farmers, managers, and buyers</td><td>5</td><td>High</td></tr>
+    <tr><td>Sprint-5</td><td>Reports</td><td>USN-7</td><td>Reports showing crop yield, sales, and buyer transactions</td><td>4</td><td>High</td></tr>
+    <tr><td>Sprint-6</td><td>Dashboards</td><td>USN-8</td><td>Dashboards showing crop productivity and operational statistics</td><td>4</td><td>Medium</td></tr>
+</table>
+
+<h3>5.2 Project Tracker</h3>
+<table>
+    <tr><th>Sprint</th><th>Total Story Points</th><th>Duration</th><th>Start Date</th><th>End Date</th><th>Completed</th></tr>
+    <tr><td>Sprint-1</td><td>20</td><td>6 Days</td><td>24 Oct 2022</td><td>29 Oct 2022</td><td>20</td></tr>
+    <tr><td>Sprint-2</td><td>20</td><td>6 Days</td><td>31 Oct 2022</td><td>05 Nov 2022</td><td>20</td></tr>
+    <tr><td>Sprint-3</td><td>20</td><td>6 Days</td><td>07 Nov 2022</td><td>12 Nov 2022</td><td>20</td></tr>
+    <tr><td>Sprint-4</td><td>20</td><td>6 Days</td><td>14 Nov 2022</td><td>19 Nov 2022</td><td>20</td></tr>
+</table>
+
+<h2>6. Project Development Phase</h2>
+<p>The Farm Management System (FMS) in Salesforce is a complete solution designed to digitize and streamline how agricultural operations are handled. The application brings together data about farms, crops, farmers, and buyers into one unified platform.</p>
+
+<h3>Milestone 1 — Salesforce Developer Org Setup</h3>
+<p><strong>What is Salesforce?</strong> Salesforce is a cloud-based platform that lets you manage relationships with customers, collaborate with team members, and store data securely — all from anywhere with an internet connection.</p>
+<p><strong>What was done:</strong> I signed up for a Developer org at developer.salesforce.com, verified my account via email, and set up my password. This org became the environment where the entire Farm Management System was built and configured.</p>
+
+<h3>Milestone 2 — Custom Objects</h3>
+<p><strong>What is an Object?</strong> In Salesforce, an object is essentially a database table. It contains fields (columns) and records (rows). Custom objects let you store data specific to your application.</p>
+<p><strong>What was built:</strong> I created four custom objects:</p>
+<table>
+    <tr><th>#</th><th>Object Label</th><th>API Name</th><th>Purpose</th></tr>
+    <tr><td>1</td><td>Farm</td><td>Farm__c</td><td>Stores farm details like name, type, soil quality, irrigation, location, and size</td></tr>
+    <tr><td>2</td><td>Crop</td><td>Crop__c</td><td>Stores crop information including planting dates, yield data, and expected yield calculations</td></tr>
+    <tr><td>3</td><td>Farmer</td><td>Farmer__c</td><td>Stores farmer personal and contact details including state, district, and village</td></tr>
+    <tr><td>4</td><td>Buyer</td><td>Buyer__c</td><td>Stores buyer information including contact, email, address, and buyer type</td></tr>
+</table>
+
+<p><strong>Object Manager — Custom Objects Overview:</strong></p>
+<img class="screenshot" src="screenshots/scr5_obj_mgr_crop.png" alt="Object Manager showing Crop custom object">
+<p class="img-caption">Object Manager showing Crop (Crop__c) custom object</p>
+
+<img class="screenshot" src="screenshots/scr7_obj_mgr_buyer.png" alt="Object Manager showing Buyer custom object">
+<p class="img-caption">Object Manager showing Buyer (Buyer__c) custom object</p>
+
+<img class="screenshot" src="screenshots/scr8_obj_mgr_farm_farmer.png" alt="Object Manager showing Farm and Farmer custom objects">
+<p class="img-caption">Object Manager showing Farm (Farm__c) and Farmer (Farmer__c) custom objects</p>
+
+<p><strong>Individual Object Detail Pages:</strong></p>
+<img class="screenshot" src="screenshots/scr6_crop_details.png" alt="Crop object details">
+<p class="img-caption">Crop object details — API: Crop__c, Deployed, Enable Reports checked</p>
+
+<img class="screenshot" src="screenshots/scr9_farm_details.png" alt="Farm object details">
+<p class="img-caption">Farm object details — API: Farm__c, Deployed, Enable Reports and Track Field History checked</p>
+
+<img class="screenshot" src="screenshots/scr10_farmer_details.png" alt="Farmer object details">
+<p class="img-caption">Farmer object details — API: Farmer__c, Deployed</p>
+
+<img class="screenshot" src="screenshots/scr11_buyer_details.png" alt="Buyer object details">
+<p class="img-caption">Buyer object details — API: Buyer__c, Deployed, Enable Reports checked</p>
+
+<h3>Milestone 3 — Custom Tabs</h3>
+<p><strong>What are Tabs?</strong> Tabs in Salesforce serve as navigation elements that give users quick access to the data within each object.</p>
+<p><strong>What was built:</strong> I created a custom tab for each of the four custom objects — Farm, Crop, Farmer, and Buyer.</p>
+<img class="screenshot" src="screenshots/scr1_app_menu.png" alt="Farm Management System app showing all custom tabs">
+<p class="img-caption">Farm Management System app with all custom tabs visible in the navigation bar</p>
+
+<h3>Milestone 4 — Lightning App</h3>
+<p><strong>What is a Lightning App?</strong> A Lightning App in Salesforce is a collection of tabs grouped together to function as a unified application.</p>
+<p><strong>What was built:</strong> I created a Lightning App called <strong>"Farm Management System"</strong> using the App Manager. The app includes: Farms, Crops, Farmers, Buyers, Reports, and Dashboards tabs. The System Administrator profile was assigned access.</p>
+<img class="screenshot" src="screenshots/scr1_app_menu.png" alt="Farm Management System Lightning App">
+<p class="img-caption">Farm Management System Lightning App with Farms tab active, showing existing farm records</p>
+
+<h3>Milestone 5 — Fields and Relationships</h3>
+<p><strong>What are Fields?</strong> Fields in Salesforce represent individual data points within an object — similar to columns in a database table.</p>
+
+<h4>Farm Object Fields:</h4>
+<ul>
+    <li><strong>Farm Type</strong> (Picklist) — Values: Crop, Livestock, Mixed</li>
+    <li><strong>Soil Quality</strong> (Picklist) — Values: Organic, Cover Crops, Composting</li>
+    <li><strong>Irrigation</strong> (Picklist) — Values: Sprinkler Irrigation, Drip Irrigation, Localized Irrigation</li>
+    <li><strong>Location</strong> (Text)</li>
+    <li><strong>Size</strong> (Text)</li>
+    <li><strong>Farmer</strong> (Master-Detail Relationship to Farmer__c)</li>
+</ul>
+
+<h4>Crop Object Fields:</h4>
+<ul>
+    <li><strong>Crop Name</strong> (Text)</li>
+    <li><strong>Planting Date</strong> (Date)</li>
+    <li><strong>Harvest Date</strong> (Date)</li>
+    <li><strong>Farm</strong> (Lookup Relationship to Farm__c)</li>
+    <li><strong>Actual Yield</strong> (Currency)</li>
+    <li><strong>Total Acres Harvested</strong> (Number, max length 20)</li>
+    <li><strong>Expected Yield per Acre</strong> (Formula — Currency) — Calculates: <code>Actual_Yield__c / Total_Acres_Harvested__c</code></li>
+</ul>
+
+<h4>Farmer Object Fields:</h4>
+<ul>
+    <li><strong>Contact Number</strong> (Phone)</li>
+    <li><strong>State</strong> (Picklist) — Values: Telangana, Andhra Pradesh, Tamil Nadu</li>
+    <li><strong>District</strong> (Picklist, Dependent on State)</li>
+    <li><strong>Village</strong> (Picklist, Dependent on District)</li>
+</ul>
+
+<h4>Buyer Object Fields:</h4>
+<ul>
+    <li><strong>Contact</strong> (Phone)</li>
+    <li><strong>Email</strong> (Email)</li>
+    <li><strong>Address</strong> (Text Area)</li>
+    <li><strong>Buyer Type</strong> (Picklist) — Values: Wholesale, Retail</li>
+</ul>
+
+<img class="screenshot" src="screenshots/scr2_new_farm_record.png" alt="New Farm record creation form">
+<p class="img-caption">New Farm record creation form showing all custom fields</p>
+
+<h3>Milestone 6 — Profiles</h3>
+<p><strong>What is a Profile?</strong> A profile in Salesforce is a collection of settings and permissions that defines what a user can do within the platform.</p>
+<p><strong>What was built:</strong> Two custom profiles by cloning Standard User:</p>
+<ol>
+    <li><strong>Sales Department</strong> — For users handling buyer-related operations.</li>
+    <li><strong>Farm Manager</strong> — For users overseeing farm operations, crop management, and reporting.</li>
+</ol>
+
+<h3>Milestone 7 — Roles</h3>
+<p><strong>What are Roles?</strong> Roles in Salesforce define the reporting hierarchy and determine which records a user can access based on their position.</p>
+<p><strong>What was built:</strong> A <strong>"Farm Manager"</strong> role was added under the CEO role in the hierarchy.</p>
+
+<h3>Milestone 8 — Users</h3>
+<p><strong>What is a User?</strong> A user in Salesforce represents anyone who logs into the system.</p>
+<p><strong>What was built:</strong> Two users were created:</p>
+<ol>
+    <li><strong>Farm Manager</strong> — Assigned the Farm Manager role and profile, licensed as Standard Platform User.</li>
+    <li><strong>Sales Department</strong> — Assigned the Sales Manager profile for buyer data handling.</li>
+</ol>
+<blockquote><strong>Note:</strong> The Salesforce Developer Edition limits active Salesforce licenses to 2.</blockquote>
+
+<h3>Milestone 9 — Sharing Rules</h3>
+<p><strong>What are Sharing Rules?</strong> Sharing rules extend data access beyond what Organization-Wide Defaults (OWD) provide.</p>
+<p><strong>What was built:</strong></p>
+<ol>
+    <li><strong>Crop sharing rule</strong> — Shares Crop records with the Farm Manager role (Read/Write access).</li>
+    <li><strong>Buyer sharing rule</strong> — Shares Buyer records with the Sales Department role (Read/Write access).</li>
+</ol>
+
+<h3>Milestone 10 — Data Entry (User Adoption)</h3>
+<p>Sample records were created across all four objects to verify that fields, picklists, field dependencies, relationships, and validation rules work correctly in a real usage scenario.</p>
+
+<h3>Milestone 11 — Reports</h3>
+<p><strong>What are Reports?</strong> Reports in Salesforce display a list of records that match specific criteria, organized in rows and columns.</p>
+<p><strong>What was built:</strong> A report called <strong>"Farms with Crops"</strong> displaying: Farm Name, Crop Name, Planted Date, Actual Yield, Expected Yield per Acre, Farm Type, Location, and Irrigation — grouped by Farm Name with subtotals and grand totals.</p>
+
+<img class="screenshot" src="screenshots/scr4_report.png" alt="Farms with Crops report">
+<p class="img-caption">Farms with Crops report showing farm and crop data with subtotals</p>
+
+<img class="screenshot" src="screenshots/scr12_report_alt.png" alt="Farms with Crops report alternate view">
+<p class="img-caption">Farms with Crops report — alternate view</p>
+
+<h3>Milestone 12 — Dashboards</h3>
+<p><strong>What are Dashboards?</strong> Dashboards provide a visual summary of data from one or more reports using charts, graphs, gauges, and tables.</p>
+<p><strong>What was built:</strong> A dashboard called <strong>"Farms with Crops"</strong> with a <strong>Gauge chart</strong> component visualizing the aggregated crop yield data.</p>
+
+<img class="screenshot" src="screenshots/scr3_dashboard.png" alt="Farms with Crops dashboard">
+<p class="img-caption">Farms with Crops dashboard showing a Gauge chart visualization</p>
+
+<h2>7. Functional &amp; Performance Testing</h2>
+<ul>
+    <li><strong>Record Creation</strong> — Successfully created Farm, Crop, Farmer, and Buyer records.</li>
+    <li><strong>Field Validation</strong> — Required fields and picklists working correctly.</li>
+    <li><strong>Relationship Integrity</strong> — Master-Detail and Lookup relationships linking records properly.</li>
+    <li><strong>Field Dependencies</strong> — State → District → Village filtering correctly.</li>
+    <li><strong>Profile &amp; Role Access</strong> — Access restrictions verified per profile and role.</li>
+    <li><strong>Sharing Rules</strong> — Data access extended correctly to intended roles.</li>
+    <li><strong>Reports &amp; Dashboards</strong> — Accurate data and correct chart rendering confirmed.</li>
+</ul>
+
+<h2>8. Advantages &amp; Disadvantages</h2>
+<h3>Advantages</h3>
+<ul>
+    <li>Centralized data system</li>
+    <li>Reduced paperwork</li>
+    <li>Improved accuracy through validation rules</li>
+    <li>Better monitoring with real-time reports and dashboards</li>
+    <li>Real-time analytics</li>
+</ul>
+<h3>Disadvantages</h3>
+<ul>
+    <li>Requires internet connection</li>
+    <li>Salesforce license limitations in Developer Edition</li>
+    <li>Limited offline access</li>
+</ul>
+
+<h2>9. Conclusion</h2>
+<p>Looking back at this project, I think the Farm Management System turned out to be a solid demonstration of what Salesforce can do when applied to a real-world domain like agriculture. What started as a fairly straightforward capstone assignment ended up teaching me a lot about how to think through a problem from the user's perspective, design a data model that actually makes sense, and then bring it all together with the tools Salesforce provides.</p>
+<p>The system does what it was meant to do — it replaces the fragmented, error-prone manual processes with a clean, centralized digital platform. Farmers can enter their data without worrying about it getting lost. Managers can pull up a dashboard and see exactly how things are going without waiting for someone to compile a spreadsheet. Buyers and sales teams have the information they need, when they need it.</p>
+<p>As a capstone project, it covers all the major Salesforce concepts — objects, fields, relationships, profiles, roles, sharing rules, reports, and dashboards — and applies them to a real, practical use case. I feel much more confident about working with Salesforce in a professional setting going forward.</p>
+
+<h2>10. Future Scope</h2>
+<ul>
+    <li>Mobile application integration</li>
+    <li>AI-based crop prediction using Einstein Analytics</li>
+    <li>Weather data integration via external APIs</li>
+    <li>IoT sensor connectivity for automated data collection</li>
+    <li>Government scheme integration</li>
+    <li>Market price forecasting</li>
+</ul>
+
+<h2>11. Appendix</h2>
+<ul>
+    <li><strong>Source Code:</strong> Salesforce Configuration and Metadata (Custom Objects, Fields, Profiles, Roles, Sharing Rules)</li>
+    <li><strong>Dataset:</strong> Sample Farm, Crop, Farmer, and Buyer Records</li>
+    <li><strong>Tools Used:</strong> Salesforce Developer Edition Org, Salesforce Lightning Experience</li>
+</ul>
+
+<hr>
+<p class="thank-you">Thank You</p>
+
+</body>
+</html>
